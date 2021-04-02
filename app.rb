@@ -8,11 +8,14 @@ require 'rake'
 
 set :database, {adapter: "sqlite3", database: "lepra.db"}
 
-get '/' do
-	erb :index
+class Post < ActiveRecord::Base
+	validates :post_name, presence: true
+	validates :content, presence: true
 end
 
-class Post < ActiveRecord::Base
+get '/' do
+	@all_posts = Post.order "created_at DESC"
+	erb :index
 end
 
 get '/new' do
@@ -20,8 +23,13 @@ get '/new' do
 end
 
 post '/new' do
-	c = Post.new params[:post]
-	c.seve
-	erb :index
+	@c = Post.new params[:post]
+
+	if @c.save
+		erb "Спасибо!"
+	else
+		@error = @c.errors.full_messages.first
+		erb :new
+	end
 end
 
