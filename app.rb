@@ -9,7 +9,7 @@ require 'rake'
 set :database, {adapter: "sqlite3", database: "lepra.db"}
 
 get '/' do
-	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School!!!</a>"			
+	erb :index
 end
 
 class Post < ActiveRecord::Base
@@ -17,5 +17,11 @@ end
 
 get '/new' do
 	erb :new
+end
+
+post '/new' do
+	c = Post.new params[:post]
+	c.seve
+	erb :index
 end
 
