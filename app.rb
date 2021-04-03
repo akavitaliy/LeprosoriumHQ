@@ -13,6 +13,9 @@ class Post < ActiveRecord::Base
 	validates :content, presence: true
 end
 
+class Comment < ActiveRecord::Base
+end
+
 get '/' do
 	@all_posts = Post.order "created_at DESC"
 	erb :index
@@ -33,11 +36,18 @@ post '/new' do
 	end
 end
 
-get '/details/:post_id' do
-	post_id = params[:post_id]
+get '/details/:id' do
+	post_id = params[:id]
 
-	@post = Post.find(params[:post_id])
+	@post = Post.find(params[:id])
 
 	erb :details
+end
+
+post "/details/:post_id" do
+	post_id = params[:post_id]
+	@p = Comment.new params[:comments]
+
+	redirect to ('/details/' + post_id)
 end
 
