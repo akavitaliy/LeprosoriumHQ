@@ -14,6 +14,8 @@ class Post < ActiveRecord::Base
 end
 
 class Comment < ActiveRecord::Base
+	validates :comment_name, presence: true
+	validates :message, presence: true
 end
 
 get '/' do
@@ -36,18 +38,27 @@ post '/new' do
 	end
 end
 
-get '/details/:id' do
+get '/details/:id' do	
 	post_id = params[:id]
 
 	@post = Post.find(params[:id])
+
+	@comments = Comment.find(params[:id])
 
 	erb :details
 end
 
 post "/details/:post_id" do
 	post_id = params[:post_id]
+	@post = Post.find(params[:post_id])
+	
 	@p = Comment.new params[:comments]
-
-	redirect to ('/details/' + post_id)
+	
+	if @p.save
+		redirect to ('/details/' + post_id)
+	else
+		@error = @p.errors.full_messages.first
+		erb :details	
+	end
 end
 
