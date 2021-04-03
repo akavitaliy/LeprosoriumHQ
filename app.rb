@@ -35,6 +35,9 @@ end
 
 get '/details/:post_id' do
 	post_id = params[:post_id]
+
+	@post = Post.find(params[:post_id])
+
 	erb :details
 end
 
