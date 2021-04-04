@@ -8,10 +8,29 @@
     <br>
     <br>
     <span style="font-size: 75; color: #999">Added at: <%=@post.created_at%></span>
+    <hr>
 </p>
+
 
 <br>
 <h4>Comments: </h4>
+<br>
+
+<% @comments.each do |comment| %>
+    <p>
+    <em><%= comment.comment_name %></em>
+    <br>
+    <br>
+    <%= comment.message %>
+    <br>
+    <br>
+    <span style="font-size: 75; color: #999">Added at: <%= comment.created_at %></span>
+    <hr>
+    </p>
+<%end%>
+
+<br>
+<h4>Add comments: </h4>
 <br>
 
 <form action="/details/<%= @post.id %>" method="POST">

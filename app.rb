@@ -41,10 +41,10 @@ end
 get '/details/:id' do	
 	post_id = params[:id]
 
+	@comments = Comment.where(post_id: "#{post_id}")
+
 	@post = Post.find(params[:id])
-
-	@comments = Comment.find(params[:id])
-
+	
 	erb :details
 end
 
@@ -53,6 +53,7 @@ post "/details/:post_id" do
 	@post = Post.find(params[:post_id])
 	
 	@p = Comment.new params[:comments]
+	@p.post_id = params[:post_id]
 	
 	if @p.save
 		redirect to ('/details/' + post_id)
